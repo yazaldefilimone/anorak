@@ -1,0 +1,24 @@
+{
+  "name": "cicilia-bot",
+  "version": "1.0.0",
+  "description": "bot for whatsapp",
+  "main": "index.ts",
+  "author": "Yazalde Filimone",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npx ts-node-dev --respawn --transpile-only --exit-child --watch srcc src/core/index.ts",
+    "start": "tsc && node dist/core/index.js"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "node-nlp": "^4.24.0",
+    "puppeteer": "^13.7.0",
+    "ts-node-dev": "^1.1.8",
+    "venom-bot": "^4.0.11"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/puppeteer": "^5.4.6",
+    "typescript": "^4.6.4"
+  }
+}

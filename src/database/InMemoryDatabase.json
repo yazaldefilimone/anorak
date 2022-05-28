@@ -1,7 +1,0 @@
-{
-  "myPerfil": { "name": "Yazalde Filimone", "job": "FullStack Developer", "description": "" },
-  "users": [
-    { "name": "Yazalde Filimone", "password": "12345678", "isOpen": false, "status": [{}] },
-    { "name": "Vilton", "password": "password", "number": "@#823yet3e823y9" }
-  ]
-}

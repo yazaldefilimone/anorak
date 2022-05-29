@@ -7,7 +7,7 @@ import makeWASocket, {
 } from '@adiwajshing/baileys';
 
 import { Boom } from '@hapi/boom';
-import { bringMusicFactory } from '../factories';
+import { commands } from '../commands';
 
 const conn: any[] = [];
 
@@ -36,7 +36,7 @@ export const connect = (session: any) => {
     }
   });
 
-  bringMusicFactory(conn[session]);
+  commands(conn[session]);
 
   // conn[session].ev.on('messages.upsert', async (msg: any) => {
   //   console.log(JSON.stringify(msg, undefined, 2));

@@ -1,3 +1,5 @@
+import './settings/alias';
+
 import { connect } from './baileys';
 
 connect({

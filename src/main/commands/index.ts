@@ -15,25 +15,36 @@ export function commands(socket: WASocket) {
     const mensagem = content?.message?.conversation;
 
     if (mensagem !== null && mensagem?.charAt(0)) {
-      if (mensagem.substring(0, 4) == '!mp3') {
-        const content = mensagem.substring(4).trim();
+      if (mensagem.substring(0, '!mp3'.length) == '!mp3') {
+        const content = mensagem.substring('!mp3'.length).trim();
         console.log('funcionalidade de download de musica');
         await socket.sendMessage(currentUser, { text: 'funcionalidade de download de musica' });
       }
-      if (mensagem.substring(0, 4) == '!mp4') {
-        const content = mensagem.substring(4).trim();
+
+      if (mensagem.substring(0, '!mp4'.length) == '!mp4') {
+        const content = mensagem.substring('!mp4'.length).trim();
         console.log('funcionalidade de download de video');
         await socket.sendMessage(currentUser, { text: 'funcionalidade de download de video' });
       }
-      if (mensagem.substring(0, 6) == '!letra') {
-        const content = mensagem.substring(6).trim();
+
+      if (mensagem.substring(0, '!letra'.length) == '!letra') {
+        const content = mensagem.substring('!letra'.length).trim();
         console.log('funcionalidade de pesquisa de letras ');
         await socket.sendMessage(currentUser, { text: 'funcionalidade de pesquisa de letras ' });
       }
-      if (mensagem.substring(0, 7) == '!google') {
-        const content = mensagem.substring(7).trim();
+
+      if (mensagem.substring(0, '!google'.length) == '!google') {
+        const content = mensagem.substring('!google'.length).trim();
         console.log('funcionalidade de pesquisa de google');
         await socket.sendMessage(currentUser, { text: 'funcionalidade de pesquisa de google' });
+      }
+
+      if (
+        mensagem.substring(0, '!comandos'.length) == '!comandos' ||
+        mensagem.substring(0, '!menu'.length) == '!menu' ||
+        mensagem.substring(0, '!comando'.length) == '!comando'
+      ) {
+        await socket.sendMessage(currentUser, { text: '' });
       }
     }
   });

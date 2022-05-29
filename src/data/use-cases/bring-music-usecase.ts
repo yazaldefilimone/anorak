@@ -1,6 +1,6 @@
-import { IBringMusicUseCase } from '~/domain/use-cases';
-import { HttpStatusCode, IHttpClient } from '~/data/protocols/http';
-import { NotfoundError, UnexpectedError } from '~/domain/errors';
+import { IBringMusicUseCase } from '@/domain/use-cases';
+import { HttpStatusCode, IHttpClient } from '@/data/protocols/http';
+import { NotfoundError, UnexpectedError } from '@/domain/errors';
 
 export class BringMusicUseCase implements IBringMusicUseCase {
   private readonly httpClient: IHttpClient;

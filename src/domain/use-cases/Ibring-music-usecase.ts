@@ -1,4 +1,4 @@
-import { bringMusic } from '~/domain/entities';
+import { bringMusic } from '@/domain/entities';
 
 export interface IBringMusicUseCase {
   perform: (data: IBringMusicUseCase.input) => IBringMusicUseCase.model;

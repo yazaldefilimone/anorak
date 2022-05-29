@@ -7,6 +7,7 @@ import makeWASocket, {
 } from '@adiwajshing/baileys';
 
 import { Boom } from '@hapi/boom';
+import { bringMusicFactory } from '../factories';
 
 const conn: any[] = [];
 
@@ -35,12 +36,14 @@ export const connect = (session: any) => {
     }
   });
 
-  conn[session].ev.on('messages.upsert', async (msg: any) => {
-    console.log(JSON.stringify(msg, undefined, 2));
+  bringMusicFactory(conn[session]);
 
-    console.log('replying to', msg.messages[0].key.remoteJid);
-    await conn[session].sendMessage(msg.messages[0].key.remoteJid!, { text: 'Hello there!' });
-  });
+  // conn[session].ev.on('messages.upsert', async (msg: any) => {
+  //   console.log(JSON.stringify(msg, undefined, 2));
+
+  //   console.log('replying to', msg.messages[0].key.remoteJid);
+  //   await conn[session].sendMessage(msg.messages[0].key.remoteJid!, { text: 'Hello there!' });
+  // });
 
   conn[session].ev.on('creds.update', saveState);
 };

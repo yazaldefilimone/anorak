@@ -5,3 +5,6 @@ node_modules
 **.node-persist**
 **_IGNORE_**
 # end managed by open-wa
+cache
+index.js
+auth_info_multi.json

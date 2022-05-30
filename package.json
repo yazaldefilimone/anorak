@@ -17,7 +17,7 @@
   },
   "scripts": {
     "dev": "npx ts-node-dev --respawn --transpile-only --exit-child --watch src src/main/start.ts",
-    "start": "npx ts-node src/main/start.ts"
+    "start": "tsc && node dist/main/start.js"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

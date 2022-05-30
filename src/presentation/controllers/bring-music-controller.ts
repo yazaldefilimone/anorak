@@ -13,6 +13,9 @@ export class BringMusicController implements IController {
   async execute(): IController.modal {
     this.baileysClient.ev.on('messages.upsert', (content) => {
       console.log({ content });
+      content.messages.forEach((mes) => {
+        console.log({ message: mes });
+      });
       // this.bringMusicUseCase.perform();
     });
   }

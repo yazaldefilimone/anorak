@@ -1,4 +1,4 @@
-import { bringMusic } from '@/domain/entities';
+import { Sound } from '@/domain/entities';
 
 export interface IBringMusicUseCase {
   perform: (data: IBringMusicUseCase.input) => IBringMusicUseCase.model;
@@ -6,5 +6,5 @@ export interface IBringMusicUseCase {
 
 export namespace IBringMusicUseCase {
   export type model = Promise<{ path: string } | Error>;
-  export type input = bringMusic;
+  export type input = Sound;
 }

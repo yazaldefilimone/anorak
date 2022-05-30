@@ -54,9 +54,7 @@ export class BringMusicUseCase implements IBringMusicUseCase {
         } else {
           this.VideoProgress.push({ id: videoId, video: progress, index: true });
 
-          const image = resultSearch.thumbnails
-            ? resultSearch.thumbnails.url
-            : '/home/yazaldefilimone/www/learnspace/anorak/cache/status/error.jpg';
+          const image = resultSearch?.thumbnails?.url;
 
           const preMessage = `\n\nBaixando a  Musica com o nome: ${Letter.bold(resultSearch.title)}\n\n${
             progress.eta

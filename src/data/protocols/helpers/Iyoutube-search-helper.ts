@@ -20,7 +20,7 @@ type Model = {
   channelTitle: string;
   title: string;
   description: string;
-  thumbnails: Thumbnails;
+  thumbnails?: Thumbnails;
 };
 
 type Thumbnails = {

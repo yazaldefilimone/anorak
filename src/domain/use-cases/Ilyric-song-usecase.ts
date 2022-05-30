@@ -1,4 +1,4 @@
-import { bringMusic } from '../entities';
+import { Sound } from '../entities';
 
 export interface ILyricSongUseCase {
   perform: (data: ILyricSongUseCase.input) => ILyricSongUseCase.model;
@@ -6,5 +6,5 @@ export interface ILyricSongUseCase {
 
 export namespace ILyricSongUseCase {
   export type model = Promise<{ lyric: string } | Error>;
-  export type input = bringMusic;
+  export type input = Sound;
 }

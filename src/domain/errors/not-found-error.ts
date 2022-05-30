@@ -1,6 +1,6 @@
 export class NotfoundError extends Error {
-  constructor(name: string) {
-    super(`${name} nao  encontrado!`);
+  constructor() {
+    super(`Nao encontrei o que me pediu 👻👻. Verifique se ha um erro de escrita!`);
     this.name = 'NotfoundError';
   }
 }

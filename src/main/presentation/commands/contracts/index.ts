@@ -42,6 +42,7 @@ export const contracts = {
   ┠❥ *!anime [query]*
   ┠❥ *!meme*
   ┠❥ *!join [linkGroup]*
+  ┠❥ *!ideia [Sua ideia]*
   ╿
   ╿
   ╰╼❥ Envie o comando *!sobre [comando]* para descobrir a função e como usar o comando que passar entre chavetas, DEVE LER!!.

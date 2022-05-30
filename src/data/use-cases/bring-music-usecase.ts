@@ -50,15 +50,18 @@ export class BringMusicUseCase implements IBringMusicUseCase {
       this.youtubeMp3down.on('progress', async ({ videoId, progress }) => {
         const isExists = this.VideoProgress.find((content) => content.id == videoId);
         if (isExists) {
-          return;
+          console.log('entrouuuuuuuuuuuuuu');
         } else {
           this.VideoProgress.push({ id: videoId, video: progress, index: true });
 
-          const image = resultSearch.thumbnails ? resultSearch.thumbnails.url : '';
+          // const image = resultSearch.thumbnails
+          //   ? resultSearch.thumbnails.url
+          //   : '/home/yazaldefilimone/www/learnspace/anorak/cache/status/error.jpg';
+
           const preMessage = `\n\nBaixando a  Musica com o nome: ${Letter.bold(resultSearch.title)}\n\n${
             progress.eta
           } segundos pra o envio da musica\n${Letter.bold(`${parseFloat(String(progress.percentage)).toFixed(2)}%`)}`;
-          await socket.sendMessage(currentUser, { image: { url: image }, caption: response(preMessage, true) });
+          await socket.sendMessage(currentUser, { text: response(preMessage, true) });
         }
       });
 
@@ -67,7 +70,11 @@ export class BringMusicUseCase implements IBringMusicUseCase {
       });
 
       this.youtubeMp3down.on('finished', async (err, data) => {
+        if (err) {
+          await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));
+        }
         await socket.sendMessage(currentUser, { audio: { url: data.file }, mimetype: 'audio/mp4' });
+        this.VideoProgress = [];
       });
     } catch (err: any) {
       await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));

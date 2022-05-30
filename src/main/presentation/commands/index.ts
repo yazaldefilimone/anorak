@@ -19,6 +19,7 @@ export function commands(socket: WASocket) {
     const mensagem = content?.message?.conversation;
 
     if (mensagem !== null && mensagem?.charAt(0)) {
+      console.log(messages[0]);
       if (mensagem.substring(0, '!mp3'.length).toLowerCase() == '!mp3') {
         const content = mensagem.substring('!mp3'.length).trim();
         const response = await bringMusicFactory.perform({ name: content, user_id: currentUser }, socket, currentUser);

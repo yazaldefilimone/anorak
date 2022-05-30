@@ -22,6 +22,6 @@ export const OkResponse = (message: string, img: string) => {
 
 export const response = (message: string, type = true) => {
   return `┏ 🤖  *ANORAK* 🤖
-  ┷┯ ☾ ${type ? '*Status: Sucesso 🥳🤩✨*' : '*Status: Sucesso 🥳🤩✨*'} ☽\n${message}
+  ┷┯ ☾ ${type ? '*Status: Sucesso 🥳🤩✨*' : '*Status: Error 🥳🤩✨*'} ☽\n${message}
   `;
 };

@@ -56,6 +56,7 @@ export class BringMusicUseCase implements IBringMusicUseCase {
 
           const image = resultSearch?.thumbnails?.url;
 
+          console.log({ image });
           const preMessage = `\n\nBaixando a  Musica com o nome: ${Letter.bold(resultSearch.title)}\n\n${
             progress.eta
           } segundos pra o envio da musica\n${Letter.bold(`${parseFloat(String(progress.percentage)).toFixed(2)}%`)}`;
@@ -68,18 +69,19 @@ export class BringMusicUseCase implements IBringMusicUseCase {
       });
 
       this.youtubeMp3down.on('error', async (error) => {
-        await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));
+        return await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));
       });
 
       this.youtubeMp3down.on('finished', async (err, data) => {
         if (err) {
-          await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));
+          this.VideoProgress = [];
+          return await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));
         }
         await socket.sendMessage(currentUser, { audio: { url: data.file }, mimetype: 'audio/mp4' });
         this.VideoProgress = [];
       });
     } catch (err: any) {
-      await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));
+      return await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));
     }
   }
 }

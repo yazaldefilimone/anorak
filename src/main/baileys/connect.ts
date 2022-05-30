@@ -7,7 +7,7 @@ import makeWASocket, {
 } from '@adiwajshing/baileys';
 
 import { Boom } from '@hapi/boom';
-import { commands } from '../commands';
+import { commands } from '@/main/presentation/commands';
 
 const conn: any[] = [];
 

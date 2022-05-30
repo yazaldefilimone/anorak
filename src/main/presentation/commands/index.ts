@@ -1,7 +1,8 @@
-import { bringMusicFactory, lyricSongFactory } from '@/main/factories';
+import { bringMusicFactory, bringVideoFactory, lyricSongFactory } from '@/main/factories';
 import { MessageUpdateType, proto, WASocket } from '@adiwajshing/baileys';
 import { contracts } from './contracts';
-import { botResponse } from '@/main/presentation/helpers';
+import fs from 'fs/promises';
+import { errorResponse, response as botResponse } from '@/main/presentation/helpers';
 import { resolve } from 'path';
 export function commands(socket: WASocket) {
   const mp3Path = resolve(__dirname, '..', '..', '..', '..', 'cache', 'mp3');
@@ -14,6 +15,7 @@ export function commands(socket: WASocket) {
       return true;
     }
 
+    let permission = ['258858135192@s.whatsapp.net', '120363023889834376@g.us'];
     const mensagem = content?.message?.conversation;
 
     if (mensagem !== null && mensagem?.charAt(0)) {
@@ -23,12 +25,22 @@ export function commands(socket: WASocket) {
       }
       if (mensagem.substring(0, '!mp4'.length).toLowerCase() == '!mp4') {
         const content = mensagem.substring('!mp4'.length).trim();
-        console.log('funcionalidade de download de video');
-        await socket.sendMessage(currentUser, { text: 'funcionalidade de download de video' });
+
+        if (permission.includes(currentUser)) {
+          return await bringVideoFactory.perform({ name: content, user_id: currentUser }, socket, currentUser);
+        } else {
+          return await socket.sendMessage(
+            currentUser,
+            errorResponse(
+              'Essa Funcionalidade esta restrita. So pessoas Autorizadas podem acessada\n\n *Peca autorização ao Yazalde Filimone* ',
+            ),
+          );
+        }
       }
 
       if (mensagem.substring(0, '!letra'.length).toLowerCase() == '!letra') {
         const content = mensagem.substring('!letra'.length).trim();
+        console.log(currentUser);
         const response = await lyricSongFactory.perform({ name: content, user_id: currentUser });
 
         if (response instanceof Error) {
@@ -40,7 +52,7 @@ export function commands(socket: WASocket) {
       if (mensagem.substring(0, '!google'.length).toLowerCase() == '!google') {
         // const content = mensagem.substring('!google'.length).trim();
         // console.log(');
-        const funcionalidade = await socket.sendMessage(currentUser, { text: 'funcionalidade de pesquisa de google' });
+        const funcionalidade = await socket.sendMessage(currentUser, { text: botResponse('Esta funcionalidade esta na Fase de teste!!!') });
       }
 
       if (
@@ -49,6 +61,19 @@ export function commands(socket: WASocket) {
         mensagem.substring(0, '!comando'.length).toLowerCase() == '!comando'
       ) {
         await socket.sendMessage(currentUser, { text: contracts.about() });
+      }
+      if (mensagem.substring(0, '!ideia'.length).toLowerCase() == '!ideia') {
+        const userHelp = messages[0].pushName;
+        const pathname = resolve(__dirname, 'contracts', 'ideias.text');
+        await socket.sendMessage(currentUser, { text: contracts.ideia() });
+
+        const data = await fs.readFile(pathname, { encoding: 'utf-8' });
+        const content = mensagem.substring('!ideia'.length).trim();
+
+        const text = `${data}\n\n|----------------Ideia----------------|\n\nname: ${userHelp}
+        }{\n${content}\ndata:${new Date().toISOString()}`;
+
+        await fs.writeFile(pathname, text);
       }
 
       if (

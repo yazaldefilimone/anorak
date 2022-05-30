@@ -56,4 +56,14 @@ export const contracts = {
     )}
     `;
   },
+  ideia: () => {
+    return `
+      ┏ 🤖  *ANORAK* 🤖
+    ┷┯ ☾ *Obrigado* ☽\n\nMuito Grato por pensar em contribuir em mim, assim que possível o ${Letter.bold(
+      'Yazalde Filimone',
+    )} vai ler a tua mensagem e ver se da para implementar.\n\n ${Letter.monoSpace(
+      'Vai receber uma mensagem no privado se a tua ideia for bem aceite',
+    )}Se for bem aceite e voce saber Programação vai entrar na comunidade e vai se tornar um ${Letter.bold('Gunter')}
+    `;
+  },
 };

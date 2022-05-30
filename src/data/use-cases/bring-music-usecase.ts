@@ -77,8 +77,8 @@ export class BringMusicUseCase implements IBringMusicUseCase {
           this.VideoProgress = [];
           return await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));
         }
-        await socket.sendMessage(currentUser, { audio: { url: data.file }, mimetype: 'audio/mp4' });
         this.VideoProgress = [];
+        return await socket.sendMessage(currentUser, { audio: { url: data.file }, mimetype: 'audio/mp4' });
       });
     } catch (err: any) {
       return await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));

@@ -1,11 +1,9 @@
-import { BringMusicUseCase } from '@/data/use-cases';
+import { BringMusicUseCase, LyricSongUseCase } from '@/data/use-cases';
 import { AxiosHttpClient } from '@/infra/http';
-import { BringMusicController } from '@/presentation/controllers';
 import { WASocket } from '@adiwajshing/baileys';
+import * as Genius from 'genius-lyrics';
 
 const axiosHttpClient = new AxiosHttpClient();
-const bringMusicUseCase = new BringMusicUseCase(axiosHttpClient, 'https//yazaldedev.com');
-export const bringMusicFactory = (baileysClient: WASocket) => {
-  const bringMusicController = new BringMusicController(bringMusicUseCase, baileysClient);
-  bringMusicController.execute();
-};
+
+const genius = new Genius.Client();
+export const lyricSongFactory = new LyricSongUseCase(genius);

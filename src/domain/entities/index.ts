@@ -1,1 +1,1 @@
-export * from './bring-music';
+export * from './sound';

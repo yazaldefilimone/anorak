@@ -1,5 +1,7 @@
-export class AlgorithmTransformBytes {
-  static execute(bytes: number, decimals = 2): string {
+import { IAlgorithmTransformBytes } from '@/data/protocols/helpers';
+
+export class AlgorithmTransformBytes implements IAlgorithmTransformBytes {
+  execute(bytes: number, decimals = 2): string {
     if (bytes === 0) return '0 Bytes';
 
     const k = 1024;

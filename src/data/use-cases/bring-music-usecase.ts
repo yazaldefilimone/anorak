@@ -54,14 +54,18 @@ export class BringMusicUseCase implements IBringMusicUseCase {
         } else {
           this.VideoProgress.push({ id: videoId, video: progress, index: true });
 
-          // const image = resultSearch.thumbnails
-          //   ? resultSearch.thumbnails.url
-          //   : '/home/yazaldefilimone/www/learnspace/anorak/cache/status/error.jpg';
+          const image = resultSearch.thumbnails
+            ? resultSearch.thumbnails.url
+            : '/home/yazaldefilimone/www/learnspace/anorak/cache/status/error.jpg';
 
           const preMessage = `\n\nBaixando a  Musica com o nome: ${Letter.bold(resultSearch.title)}\n\n${
             progress.eta
           } segundos pra o envio da musica\n${Letter.bold(`${parseFloat(String(progress.percentage)).toFixed(2)}%`)}`;
-          await socket.sendMessage(currentUser, { text: response(preMessage, true) });
+          if (image) {
+            await socket.sendMessage(currentUser, { image: { url: image }, caption: response(preMessage, true) });
+          } else {
+            await socket.sendMessage(currentUser, { text: response(preMessage, true) });
+          }
         }
       });
 

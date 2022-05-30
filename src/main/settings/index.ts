@@ -2,7 +2,6 @@ import { env } from '@/shared/env';
 import { resolve } from 'path';
 import { YouTubeSearchOptions } from 'youtube-search';
 export const youtubeDownConfig = {
-  ffmpegPath: '/usr/bin/ffmpeg',
   outputPath: resolve(__dirname, '..', '..', '..', 'cache', 'mp3'), // Output file location (default: the home directory)
   youtubeVideoQuality: 'highestaudio', // Desired video quality (default: highestaudio)
   queueParallelism: 2, // Download parallelism (default: 1)

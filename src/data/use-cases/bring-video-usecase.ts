@@ -51,7 +51,7 @@ export class BringVideoUseCase implements IBringVideoUseCase {
       };
       const infos = `Qualidade: ${videoInfo.qualityNumber} | ${videoInfo.qualityText}\nfps:${videoInfo.fps}`;
 
-      await socket.sendMessage(currentUser, { video: { url: videoInfo.url }, mimetype: 'video/mp4', caption: infos });
+      await socket.sendMessage(currentUser, { video: { url: videoInfo.url }, mimetype: 'audio/mp4', caption: infos });
     } catch (err: any) {
       await socket.sendMessage(currentUser, errorResponse(new UnexpectedError().message));
     }

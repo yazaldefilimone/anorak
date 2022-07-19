@@ -11,7 +11,7 @@ export class GetBibliaUseCase implements IGetBibliaUseCase {
     this.url = url;
   }
 
-  async perform(data: IGetBibliaUseCase.input, socket: WASocket, currentUser: string): IGetBibliaUseCase.model {
+  async perform(data: IGetBibliaUseCase.input): IGetBibliaUseCase.model {
     const { book, chapter, lang } = data;
     let translation: string;
 
@@ -28,14 +28,20 @@ export class GetBibliaUseCase implements IGetBibliaUseCase {
 
     let text: string = '';
     if (response.statusCode === 200) {
-      response?.body?.verses.map((verse) => {
-        const currentVerse = `*${verse.book_name}-${verse.verse}:${verse.chapter}*\n\n${verse.text}\n\n`;
-        text.concat(currentVerse);
-      });
+      if (response?.body?.verses.length && response.body.verses.length > 1) {
+        response.body.verses.map((verse) => {
+          const currentVerse = `*${verse.book_name}-${verse.verse}:${verse.chapter}*\n${verse.text}\n\n`;
+          text = text.concat(currentVerse);
+        });
+      } else {
+        const verse = response?.body?.verses[0] as any;
+        const currentVerse = `*${verse.book_name}-${verse.verse}:${verse.chapter}*\n${verse.text}`;
+        text = text.concat(currentVerse);
+      }
+    } else {
+      return new Error('Internal Error');
     }
 
     return { text };
   }
 }
-
-// https://bible-api.com/joao+4:16?translation=almeida

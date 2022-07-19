@@ -70,6 +70,22 @@ export function commands(socket: WASocket) {
       ) {
         await socket.sendMessage(currentUser, { text: contracts.owner() });
       }
+
+      if (
+        mensagem.substring(0, '!ideia'.length).toLowerCase() == '!ideia' ||
+        mensagem.substring(0, '!help'.length).toLowerCase() == '!help'
+      ) {
+        const userHelp = messages[0].pushName;
+        const pathname = resolve(__dirname, 'contracts', 'ideias.text');
+
+        const data = await fs.readFile(pathname, { encoding: 'utf-8' });
+        const content = mensagem.substring('!ideia'.length).trim();
+
+        const text = `${data}\n\n|----Ideia----|\nNome: ${userHelp}\nMensagem: ${content}\nTimestamp:${new Date().toISOString()}`;
+        await socket.sendMessage(currentUser, { text: contracts.help(userHelp ? userHelp : 'Anónimo') });
+        await fs.writeFile(pathname, text);
+        return;
+      }
     }
   });
 }

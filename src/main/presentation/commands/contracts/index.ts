@@ -29,4 +29,7 @@ export const contracts = {
       'e sou  Apenas um garoto introvertido que gosta de animes e cosplay\n\nSoftware Engineer na A4PM - Analytics for Public Management. \n\nSou entusiasta da computação académica e sempre em constante aprendizado\n\n',
     )}*Meu Site:* https://yazaldefilimone.vercel.app/\n\n*Meu Repositório:* https://github.com/yazaldefilimonepinto`;
   },
+  help: (user: string) => {
+    return `Muito Obrigado ${user} pelo teu feedback/Ideia.\n Ja registarei, e notifiquei e mandei um email para Yazalde Filimone no final de semana ele Implementa isso.`;
+  },
 };

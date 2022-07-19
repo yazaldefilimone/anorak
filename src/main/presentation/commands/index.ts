@@ -1,9 +1,10 @@
-import { bringMusicFactory, lyricSongFactory } from '@/main/factories';
+import { bringMusicFactory, getBibliaUseCase, lyricSongFactory } from '@/main/factories';
 import { MessageUpdateType, proto, WASocket } from '@adiwajshing/baileys';
 import { contracts } from './contracts';
 import fs from 'fs/promises';
 import { response as botResponse } from '@/main/presentation/helpers';
 import { resolve } from 'path';
+
 export function commands(socket: WASocket) {
   socket.ev.on('messages.upsert', async (userMensagem) => {
     const { type, messages } = userMensagem;
@@ -14,14 +15,16 @@ export function commands(socket: WASocket) {
     // }
 
     const mensagem = content?.message?.conversation;
+
     if (mensagem !== null && mensagem?.charAt(0)) {
-      if (mensagem.substring(0, '!mp3'.length).toLowerCase() == '!mp3') {
+      const substring = (payload: string) => mensagem.substring(0, payload.length);
+
+      if (substring('!mp3').toLowerCase() == '!mp3') {
         const content = mensagem.substring('!mp3'.length).trim();
         const response = await bringMusicFactory.perform({ name: content, user_id: currentUser }, socket, currentUser);
       }
-     
 
-      if (mensagem.substring(0, '!letra'.length).toLowerCase() == '!letra') {
+      if (substring('!letra').toLowerCase() == '!letra') {
         const content = mensagem.substring('!letra'.length).trim();
         const response = await lyricSongFactory.perform({ name: content, user_id: currentUser });
 
@@ -31,25 +34,39 @@ export function commands(socket: WASocket) {
         return await socket.sendMessage(currentUser, { text: botResponse(response.lyric) });
       }
 
-      if (mensagem.substring(0, '!google'.length).toLowerCase() == '!google') {
-        // const content = mensagem.substring('!google'.length).trim();
+      if (substring('!google').toLowerCase() == '!google') {
+        // const content = mensagem.substring('!google').trim();
         // console.log(');
         const funcionalidade = await socket.sendMessage(currentUser, { text: botResponse('Esta funcionalidade esta na Fase de teste!!!') });
       }
 
       if (
-        mensagem.substring(0, '!comandos'.length).toLowerCase() == '!comandos' ||
-        mensagem.substring(0, '!menu'.length).toLowerCase() == '!menu' ||
-        mensagem.substring(0, '!comando'.length).toLowerCase() == '!comando'
+        substring('!comandos').toLowerCase() == '!comandos' ||
+        substring('!menu').toLowerCase() == '!menu' ||
+        substring('!comando').toLowerCase() == '!comando'
       ) {
         await socket.sendMessage(currentUser, { text: contracts.about() });
       }
 
+      if (substring('!biblia').toLowerCase() == '!biblia') {
+        const content = mensagem.substring('!biblia'.length).trim();
+        const [book, chapter, lang] = content.split(' ');
+        console.log({ content });
+
+        const response = await getBibliaUseCase.perform({ book, chapter, lang });
+        console.log({ response });
+        if (response instanceof Error) {
+          return await socket.sendMessage(currentUser, { text: botResponse('Ouve algun erro inesperado', false) });
+        }
+
+        await socket.sendMessage(currentUser, { text: botResponse(response.text) });
+      }
+
       if (
-        mensagem.substring(0, '!sobre'.length).toLowerCase() == '!sobre' ||
-        mensagem.substring(0, '!anorak'.length).toLowerCase() == '!anorak' ||
-        mensagem.substring(0, '!criador'.length).toLowerCase() == '!criador' ||
-        mensagem.substring(0, '!dono'.length).toLowerCase() == '!dono'
+        substring('!sobre').toLowerCase() == '!sobre' ||
+        substring('!anorak').toLowerCase() == '!anorak' ||
+        substring('!criador').toLowerCase() == '!criador' ||
+        substring('!dono').toLowerCase() == '!dono'
       ) {
         await socket.sendMessage(currentUser, { text: contracts.owner() });
       }

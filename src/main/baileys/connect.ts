@@ -1,17 +1,11 @@
-import makeWASocket, {
-  useSingleFileAuthState,
-  DisconnectReason,
-  WAMessage,
-  WASocket,
-  downloadContentFromMessage,
-} from '@adiwajshing/baileys';
+import makeWASocket, { useSingleFileAuthState, DisconnectReason } from '@adiwajshing/baileys';
 
 import { Boom } from '@hapi/boom';
 import { commands } from '@/main/presentation/commands';
 
 const conn: any[] = [];
 
-export const connect = (session: any) => {
+export const connect = async (session: any) => {
   const { state, saveState } = useSingleFileAuthState('./auth_info_multi.json');
   conn[session] = makeWASocket({
     printQRInTerminal: true,
@@ -24,7 +18,6 @@ export const connect = (session: any) => {
     if (connection === 'close') {
       const shouldReconnect = (lastDisconnect.error as Boom)?.output?.statusCode !== DisconnectReason.loggedOut;
       console.log('connection closed due to ', lastDisconnect.error, ', reconnecting ', shouldReconnect);
-      // reconnect if not logged out
       if (shouldReconnect) {
         connect({
           printQRInTerminal: true,
@@ -38,12 +31,7 @@ export const connect = (session: any) => {
 
   commands(conn[session]);
 
-  // conn[session].ev.on('messages.upsert', async (msg: any) => {
-  //   console.log(JSON.stringify(msg, undefined, 2));
-
-  //   console.log('replying to', msg.messages[0].key.remoteJid);
-  //   await conn[session].sendMessage(msg.messages[0].key.remoteJid!, { text: 'Hello there!' });
-  // });
+  
 
   conn[session].ev.on('creds.update', saveState);
 };

@@ -27,19 +27,25 @@ export class GetBibliaUseCase implements IGetBibliaUseCase {
     });
 
     let text: string = '';
+    console.log(response.statusCode);
     if (response.statusCode === 200) {
       if (response?.body?.verses.length && response.body.verses.length > 1) {
         response.body.verses.map((verse) => {
-          const currentVerse = `*${verse.book_name}-${verse.verse}:${verse.chapter}*\n${verse.text}\n\n`;
+          const currentVerse = `*${verse.book_name}-${verse.chapter}:${verse.verse}*\n${verse.text}\n\n`;
           text = text.concat(currentVerse);
         });
       } else {
         const verse = response?.body?.verses[0] as any;
-        const currentVerse = `*${verse.book_name}-${verse.verse}:${verse.chapter}*\n${verse.text}`;
+        const currentVerse = `*${verse.book_name}-${verse.chapter}:${verse.verse}*\n${verse.text}`;
         text = text.concat(currentVerse);
       }
-    } else {
-      return new Error('Internal Error');
+    }
+
+    if (response.statusCode === 404) {
+      return new Error(`Nao achei nada a respeito: de ${data}`);
+    }
+    if (response.statusCode !== 200 && response.statusCode !== 404) {
+      return new Error('Ouve um Erro interno, Volte a tentar numa outra hora...');
     }
 
     return { text };

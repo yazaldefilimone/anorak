@@ -19,19 +19,23 @@ export function commands(socket: WASocket) {
     if (mensagem !== null && mensagem?.charAt(0)) {
       const substring = (payload: string) => mensagem.substring(0, payload.length);
 
-      if (substring('!mp3').toLowerCase() == '!mp3') {
-        const content = mensagem.substring('!mp3'.length).trim();
-        const response = await bringMusicFactory.perform({ name: content, user_id: currentUser }, socket, currentUser);
-      }
+      // if (substring('!mp3').toLowerCase() == '!mp3') {
+      //   const content = mensagem.substring('!mp3'.length).trim();
+      //   const response = await bringMusicFactory.perform({ name: content, user_id: currentUser }, socket, currentUser);
+      // }
 
       if (substring('!letra').toLowerCase() == '!letra') {
-        const content = mensagem.substring('!letra'.length).trim();
-        const response = await lyricSongFactory.perform({ name: content, user_id: currentUser });
+        try {
+          const content = mensagem.substring('!letra'.length).trim();
+          const response = await lyricSongFactory.perform({ name: content, user_id: currentUser });
+          if (response instanceof Error) {
+            return await socket.sendMessage(currentUser, { text: response.message });
+          }
 
-        if (response instanceof Error) {
-          return await socket.sendMessage(currentUser, { text: botResponse(response.message, false) });
+          return await socket.sendMessage(currentUser, { text: response.lyric });
+        } catch (eerr) {
+          await socket.sendMessage(currentUser, { text: botResponse('Ouve um Erro interno, Volte a tentar numa outra hora...', false) });
         }
-        return await socket.sendMessage(currentUser, { text: botResponse(response.lyric) });
       }
 
       if (substring('!google').toLowerCase() == '!google') {
@@ -45,21 +49,27 @@ export function commands(socket: WASocket) {
         substring('!menu').toLowerCase() == '!menu' ||
         substring('!comando').toLowerCase() == '!comando'
       ) {
-        await socket.sendMessage(currentUser, { text: contracts.about() });
+        try {
+          await socket.sendMessage(currentUser, { text: contracts.about() });
+        } catch (eerr) {
+          await socket.sendMessage(currentUser, { text: botResponse('Ouve um Erro interno, Volte a tentar numa outra hora...', false) });
+        }
       }
 
-      if (substring('!biblia').toLowerCase() == '!biblia') {
+      if (substring('!biblia').toLowerCase() == '!biblia' || substring('!biblia').toLowerCase() == '!bíblia') {
         const content = mensagem.substring('!biblia'.length).trim();
         const [book, chapter, lang] = content.split(' ');
         console.log({ content });
+        try {
+          const response = await getBibliaUseCase.perform({ book, chapter, lang });
+          if (response instanceof Error) {
+            return await socket.sendMessage(currentUser, { text: response.message });
+          }
 
-        const response = await getBibliaUseCase.perform({ book, chapter, lang });
-        console.log({ response });
-        if (response instanceof Error) {
-          return await socket.sendMessage(currentUser, { text: botResponse('Ouve algun erro inesperado', false) });
+          await socket.sendMessage(currentUser, { text: response.text });
+        } catch (error: any) {
+          return await socket.sendMessage(currentUser, { text: botResponse(error.message, false) });
         }
-
-        await socket.sendMessage(currentUser, { text: botResponse(response.text) });
       }
 
       if (
@@ -68,23 +78,31 @@ export function commands(socket: WASocket) {
         substring('!criador').toLowerCase() == '!criador' ||
         substring('!dono').toLowerCase() == '!dono'
       ) {
-        await socket.sendMessage(currentUser, { text: contracts.owner() });
+        try {
+          await socket.sendMessage(currentUser, { text: contracts.owner() });
+        } catch (error) {
+          await socket.sendMessage(currentUser, { text: botResponse('Ouve um Erro interno, Volte a tentar numa outra hora...', false) });
+        }
       }
 
       if (
         mensagem.substring(0, '!ideia'.length).toLowerCase() == '!ideia' ||
         mensagem.substring(0, '!help'.length).toLowerCase() == '!help'
       ) {
-        const userHelp = messages[0].pushName;
-        const pathname = resolve(__dirname, 'contracts', 'ideias.text');
+        try {
+          const userHelp = messages[0].pushName;
+          const pathname = resolve(__dirname, 'contracts', 'ideias.text');
 
-        const data = await fs.readFile(pathname, { encoding: 'utf-8' });
-        const content = mensagem.substring('!ideia'.length).trim();
+          const data = await fs.readFile(pathname, { encoding: 'utf-8' });
+          const content = mensagem?.substring('!ideia'.length).trim();
 
-        const text = `${data}\n\n|----Ideia----|\nNome: ${userHelp}\nMensagem: ${content}\nTimestamp:${new Date().toISOString()}`;
-        await socket.sendMessage(currentUser, { text: contracts.help(userHelp ? userHelp : 'Anónimo') });
-        await fs.writeFile(pathname, text);
-        return;
+          const text = `${data}\n\n|----Ideia----|\nNome: ${userHelp}\nMensagem: ${content}\nTimestamp:${new Date().toISOString()}`;
+          await socket.sendMessage(currentUser, { text: contracts.help(userHelp ? userHelp : 'Anónimo') });
+          await fs.writeFile(pathname, text);
+          return;
+        } catch (error) {
+          await socket.sendMessage(currentUser, { text: botResponse('Ouve um Erro interno, Volte a tentar numa outra hora...', false) });
+        }
       }
     }
   });

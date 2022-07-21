@@ -10,9 +10,9 @@ export const contracts = {
   ╿
   ┯┷ ☾ Downloader Commandos ☽
   ╽
-  ┠❥ _!mp3 [nome do artista/musica]_
+  ┠❥ _!mp3 [nome do artista/musica] (Em Desenvolvimento)_
   ┠❥ _!letra [nome do artista/musica]_
-  ┠❥ _!facebook [link do video facebook]_
+  ┠❥ _!facebook [link do video facebook](Em Desenvolvimento)_
   ╿
   ┷┯ ☾ Outros Commandos ☽
   ╽

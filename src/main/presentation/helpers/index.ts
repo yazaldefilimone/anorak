@@ -6,5 +6,5 @@ export const OkResponse = (message: string, img: string) => {
 };
 
 export const response = (message: string, type = true) => {
-  return `${type ? '*Status: Sucesso*' : '*Status: Error*'} ☽\n${message}.`;
+  return `${type ? '*Status: Sucesso*' : '*Status: Error*'}\n${message}.`;
 };
